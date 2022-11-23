@@ -4,7 +4,7 @@ from typing import Dict, Optional, List
 
 from nonebot.log import logger
 
-CONF_PATH = os.path.join('data', 'database')
+CONF_PATH = os.path.join('data', 'database', 'nicklock')
 CONF_FILE = os.path.join(CONF_PATH, 'config.json')
 
 
