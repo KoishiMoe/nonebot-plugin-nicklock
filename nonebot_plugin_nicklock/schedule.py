@@ -41,7 +41,7 @@ async def _(bot: Bot, event: GroupMessageEvent):
     if str(event.group_id) in config.groups:  # 框架获取成员信息有缓存，按理说应该不会造成很大负载……大概……
         cfg = config.get(str(event.group_id))
         locked_nick = cfg.get(str(event.sender.user_id))
-        if await is_group_admin(bot, event.group_id, event.self_id) and locked_nick and locked_nick != (event.sender.card or event.sender.nickname):
+        if locked_nick and locked_nick != (event.sender.card or event.sender.nickname) and await is_group_admin(bot, event.group_id, event.self_id):
             try:
                 await bot.set_group_card(group_id=event.group_id, user_id=event.sender.user_id, card=locked_nick)
                 logger.debug(f"已在群 {event.group_id} 中将成员 {event.sender.user_id} 的名片重置为 {locked_nick}")
