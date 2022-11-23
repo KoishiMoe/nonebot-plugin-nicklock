@@ -26,10 +26,10 @@ async def _(bot: Bot, event: GroupMessageEvent, raw_command: str = RawCommand())
             if 'all' in at:
                 members = await bot.get_group_member_list(group_id=event.group_id)
                 for member in members:
-                    cfg[str(member['user_id'])] = member.get('card', member.get('nickname', ''))
+                    cfg[str(member['user_id'])] = member.get('card') or member.get('nickname', '')
             for qq in at:
                 info = await bot.get_group_member_info(group_id=event.group_id, user_id=qq, no_cache=True)
-                cfg[str(qq)] = info.get('card', info.get('nickname', ''))
+                cfg[str(qq)] = info.get('card') or info.get('nickname', '')
         if len(params) == 1:
             cfg[str(event.sender.user_id)] = event.sender.card or event.sender.nickname
         else:
@@ -38,7 +38,7 @@ async def _(bot: Bot, event: GroupMessageEvent, raw_command: str = RawCommand())
             for qq in params[1:]:
                 if qq.isdigit():
                     info = await bot.get_group_member_info(group_id=event.group_id, user_id=int(qq), no_cache=True)
-                    cfg[str(qq)] = info.get('card', info.get('nickname', ''))
+                    cfg[str(qq)] = info.get('card') or info.get('nickname', '')
         config.save()
         await nicklock.finish('锁定成功')
     elif params[0] == 'unlock':
