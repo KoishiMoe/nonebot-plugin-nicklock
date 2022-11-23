@@ -28,7 +28,7 @@ async def _(bot: Bot, event: GroupMessageEvent, raw_command: str = RawCommand())
                 for member in members:
                     cfg[str(member['user_id'])] = member.get('card', member.get('nickname', ''))
             for qq in at:
-                info = await bot.get_group_member_info(group_id=event.group_id, user_id=qq)
+                info = await bot.get_group_member_info(group_id=event.group_id, user_id=qq, no_cache=True)
                 cfg[str(qq)] = info.get('card', info.get('nickname', ''))
         if len(params) == 1:
             cfg[str(event.sender.user_id)] = event.sender.card or event.sender.nickname
@@ -37,7 +37,7 @@ async def _(bot: Bot, event: GroupMessageEvent, raw_command: str = RawCommand())
                 await nicklock.finish('你没有权限锁定他人的名片')
             for qq in params[1:]:
                 if qq.isdigit():
-                    info = await bot.get_group_member_info(group_id=event.group_id, user_id=int(qq))
+                    info = await bot.get_group_member_info(group_id=event.group_id, user_id=int(qq), no_cache=True)
                     cfg[str(qq)] = info.get('card', info.get('nickname', ''))
         config.save()
         await nicklock.finish('锁定成功')
