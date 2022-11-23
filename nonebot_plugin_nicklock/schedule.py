@@ -24,9 +24,9 @@ async def auto_reset():
         if await is_group_admin(my_bot, int(group), int(my_bot.self_id)):
             for member, nick in config.get(group).items():
                 try:
-                    info = await my_bot.get_group_member_info(group_id=int(group), user_id=int(member))
+                    info = await my_bot.get_group_member_info(group_id=int(group), user_id=int(member), no_cache=True)
                     if info.get('card', '') != nick:
-                        await my_bot.set_group_card(group_id=int(group), user_id=int(member), card=nick, no_cache=True)
+                        await my_bot.set_group_card(group_id=int(group), user_id=int(member), card=nick)
                         logger.debug(f"已在群 {group} 中将成员 {member} 的名片重置为 {nick}")
                         await asyncio.sleep(0.5)
                 except Exception as e:
